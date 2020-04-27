@@ -1,6 +1,7 @@
 import { Component, Inject, Input, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
+import { faQuestionCircle, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: "quiz-list",
@@ -15,6 +16,8 @@ export class QuizListComponent implements OnInit {
   quizzes: Quiz[];
   http: HttpClient;
   baseUrl: string;
+  faQuestionCircle = faQuestionCircle;
+  faCheck = faCheck;
 
   constructor(http: HttpClient,
     private router: Router,
