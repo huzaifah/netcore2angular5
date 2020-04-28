@@ -1,6 +1,6 @@
 <h3>Results</h3>
-<div *ngIf="results.length > 0">
-    <table class="results">
+<div *ngIf="results.length > 0" class="table-responsive">
+    <table class="table table-hover results">
         <thead>
             <tr>
                 <th>Text</th>
@@ -17,8 +17,8 @@
                 <td *ngIf="result.MaxValue === null">N/A</td>
                 <td *ngIf="result.MaxValue !== null">{{ result.MaxValue }}</td>
                 <td>
-                    <input type="button" value="Edit" (click)="onEdit(result)" />
-                    <input type="button" value="Delete" (click)="onDelete(result)" />
+                    <input type="button" class="btn btn-warning btn-sm" value="Edit" (click)="onEdit(result)" />
+                    <input type="button" class="btn btn-danger btn-sm" value="Delete" (click)="onDelete(result)" />
                 </td>
             </tr>
         </tbody>
@@ -28,4 +28,4 @@
     This quiz has no results (yet):
     click the <strong>Add a new result</strong> button to add the first one!
 </div>
-<input type="button" value="Add a new Result" (click)="onCreate()" />
+<input type="button" class="btn btn-dark" value="Add a new Result" (click)="onCreate()" />
