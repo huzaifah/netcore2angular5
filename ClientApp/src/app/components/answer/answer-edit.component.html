@@ -1,22 +1,32 @@
 <h2>{{title}}</h2>
 <div class="answer-edit">
-    <div class="form-group">
-        <label for="text">Answer Text:</label>
-        <br />
-        <textarea id="text" class="form-control" [(ngModel)]="answer.Text" placeholder="enter a suitable text..."></textarea>
-    </div>
-    <div class="form-group">
-        <label for="value">Score Value:</label>
-        <br />
-        <select id="value" class="form-control" name="value" [(ngModel)]="answer.Value">
-            <option *ngFor="let num of [-5,-4,-3,-2,-1,0,1,2,3,4,5]" [value]="num">
-                {{ num }}
-            </option>
-        </select>
-    </div>
-    <div>
-        <input *ngIf="editMode" type="button" class="btn btn-success" value="Apply Changes" (click)="onSubmit(answer)" />
-        <input *ngIf="!editMode" type="button" class="btn btn-success" value="Create the Answer!" (click)="onSubmit(answer)" />
-        <input type="button" value="Cancel" class="btn btn-primary" (click)="onBack()" />
-    </div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group" [ngClass]="{ 'has-error has-feedback': hasError('Text') }">
+            <label for="text">Answer Text:</label>
+            <br />
+            <textarea id="text" class="form-control" formControlName="Text" placeholder="enter a suitable text..."></textarea>
+            <span *ngIf="hasError('Text')" class="form-control-feedback" aria-hidden="true"></span>
+            <div *ngIf="hasError('Text')" class="help-block">
+                This is a required field: please insert a valid text.
+            </div>
+        </div>
+        <div class="form-group" [ngClass]="{ 'has-error has-feedback': hasError('Value') }">
+            <label for="value">Score Value:</label>
+            <br />
+            <select id="value" class="form-control" name="value" required formControlName="Value">
+                <option value="">Pick a value</option>
+                <option *ngFor="let num of [-5,-4,-3,-2,-1,0,1,2,3,4,5]" [value]="num">
+                    {{ num }}
+                </option>
+            </select>
+            <div *ngIf="hasError('Value')" class="help-block">
+                Please select a valid number between -5 and 5.
+            </div>
+        </div>
+        <div>
+            <button *ngIf="editMode" type="submit" [disabled]="form.invalid" class="btn btn-success">Apply Changes</button>
+            <button *ngIf="!editMode" type="submit" [disabled]="form.invalid" class="btn btn-success">Create the Answer!</button>
+            <button *ngIf="editMode" type="submit" class="btn btn-default" (click)="onBack()">Cancel</button>
+        </div>
+    </form>
 </div>
