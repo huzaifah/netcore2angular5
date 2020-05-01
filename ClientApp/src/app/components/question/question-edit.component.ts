@@ -13,7 +13,7 @@ export class QuestionEditComponent {
   title: string;
   question: Question;
   form: FormGroup;
-
+  activityLog: string;
   editMode: boolean;
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -76,6 +76,32 @@ export class QuestionEditComponent {
     this.form = this.fb.group({
       Text: ['', Validators.required]
     })
+
+    this.activityLog = '';
+    this.log("Form has been initialized.");
+
+    this.form.valueChanges.subscribe(val => {
+      if (!this.form.dirty) {
+        this.log("Form model has been loaded.");
+      } else {
+        this.log("Form was updated by the user.");
+      }
+    });
+
+    this.form.get("Text")!.valueChanges
+      .subscribe(val => {
+        if (!this.form.dirty) {
+          this.log("Text control has been loaded with initial values.");
+        } else {
+          this.log("Text control was updated by the user.");
+        }
+      });
+  }
+
+  log(str: string) {
+    this.activityLog += "["
+      + new Date().toLocaleDateString()
+      + "] " + str + "<br />";
   }
 
   updateForm() {
