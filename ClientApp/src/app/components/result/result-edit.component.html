@@ -1,23 +1,37 @@
 <h2>{{ title }}</h2>
 <div class="result-edit">
-    <div class="form-group">
-        <label for="text">Result text:</label>
-        <br />
-        <textarea id="text" class="form-control" [(ngModel)]="result.Text" placeholder="enter a suitable text..."></textarea>
-    </div>
-    <div class="form-group">
-        <label for="MinValue">Minimum Score Value:</label>
-        <br />
-        <input type="number" id="MinValue" class="form-control" name="MinValue" [(ngModel)]="result.MinValue" />
-    </div>
-    <div class="form-group">
-        <label for="MaxValue">Maximum Score Value:</label>
-        <br />
-        <input type="number" id="MaxValue" class="form-control" name="MaxValue" [(ngModel)]="result.MaxValue" />
-    </div>
-    <div>
-        <input *ngIf="editMode" type="button" value="Apply Changes" class="btn btn-success" (click)="onSubmit(result)" />
-        <input *ngIf="!editMode" type="button" value="Create the Result!" class="btn btn-success" (click)="onSubmit(result)" />
-        <input type="button" value="Cancel" class="btn btn-primary" (click)="onBack()" />
-    </div>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group" [ngClass]="{ 'has-error has-feedback': hasError('Text') }">
+            <label for="text">Result text:</label>
+            <br />
+            <textarea id="text" class="form-control" formControlName="Text" required placeholder="enter a suitable text..."></textarea>
+            <span *ngIf="hasError('Text')" class="form-control-feedback" aria-hidden="true"></span>
+            <div *ngIf="hasError('Text')" class="help-block">
+                This is a required field: please insert a result text.
+            </div>
+        </div>
+        <div class="form-group" [ngClass]="{ 'has-error has-feedback': hasError('MinValue') }">
+            <label for="MinValue">Minimum Score Value:</label>
+            <br />
+            <input type="number" id="MinValue" class="form-control" name="MinValue" formControlName="MinValue" />
+            <span *ngIf="hasError('MinValue')" class="form-control-feedback" aria-hidden="true"></span>
+            <div *ngIf="hasError('MinValue')" class="help-block">
+                Insert a numeric value, or leave it blank to match everything up to MaxValue
+            </div>
+        </div>
+        <div class="form-group" [ngClass]="{ 'has-error has-feedback': hasError('MaxValue') }">
+            <label for="MaxValue">Maximum Score Value:</label>
+            <br />
+            <input type="number" id="MaxValue" class="form-control" name="MaxValue" formControlName="MaxValue" />
+            <span *ngIf="hasError('MaxValue')" class="form-control-feedback" aria-hidden="true"></span>
+            <div *ngIf="hasError('MaxValue')" class="help-block">
+                Insert a numeric value, or leave it blank to match everything up to MinValue
+            </div>
+        </div>
+        <div>
+            <button *ngIf="editMode" [disabled]="form.invalid" type="submit" class="btn btn-success">Apply Changes</button>
+            <button *ngIf="!editMode" [disabled]="form.invalid" type="submit" class="btn btn-success">Create the Result!</button>
+            <button type="button" value="Cancel" class="btn btn-default" (click)="onBack()">Cancel</button>
+        </div>
+    </form>
 </div>
